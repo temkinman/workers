@@ -6,4 +6,19 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="EF\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+    <ItemGroup>
+	    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
+	    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
+		    <PrivateAssets>all</PrivateAssets>
+		    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	    </PackageReference>
+    </ItemGroup>
+
 </Project>
