@@ -14,5 +14,5 @@ public class Employee
     public string? SurName { get; set; }
     public required DateTime BDay { get; set; }
 
-    List<Position> Positions { get; set; } = new();
+    public List<Position> Positions { get; set; } = new();
 }
