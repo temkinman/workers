@@ -85,4 +85,11 @@ public class EmployeeService : IEmployeeService
 
         return null;
     }
+
+    public async Task<List<EmployeeDTO>> GetEmployeesByPositionAsync(string positionName)
+    {
+        List<Employee> employees = await _employeeRepository.GetEmployeesByPositionAsync(positionName);
+
+        return _mapper.Map<List<Employee>, List<EmployeeDTO>>(employees);
+    }
 }

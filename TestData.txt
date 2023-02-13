@@ -80,4 +80,20 @@
     "surName": "TesterovichOFF!!!",
     "bDay": "1984-07-09T00:00:00",
     "positions": []
-  }
+}
+
+
+// add new position
+
+{
+  "name": "TestPostition",
+  "grade": 7
+}
+
+// update position
+
+{
+    "id": "3cad79f6-93d0-4430-a72b-08e3fd88a898",
+    "name": "TestPostition!!!!",
+    "grade": 14
+}

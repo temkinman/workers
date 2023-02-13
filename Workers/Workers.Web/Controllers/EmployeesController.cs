@@ -25,6 +25,50 @@ public class EmployeesController : Controller
     }
 
     /// <summary>
+    /// Get Employees by position
+    /// </summary>
+    /// <param name="positionId"></param>
+    /// <returns>
+    /// <response code="200">Employee was recieved</response>
+    /// <response code="400">Employee has missing/invalid values</response>
+    /// <response code="500">Oops! Can't get your employee right now</response>
+    /// </returns>
+
+    [HttpGet("EmployeesByPosition")]
+    [ProducesResponseType(typeof(List<EmployeeDTO>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> GetAllEmployees(Guid positionId)
+    {
+        var employees = await _employeeService.GetEmployeesByPositionAsync(positionId);
+
+        return Ok(employees);
+    }
+
+    /// <summary>
+    /// Get Employees by position
+    /// </summary>
+    /// <param name="positionName"></param>
+    /// <returns>
+    /// <response code="200">Employee was recieved</response>
+    /// <response code="400">Employee has missing/invalid values</response>
+    /// <response code="500">Oops! Can't get your employee right now</response>
+    /// </returns>
+
+    [HttpGet("EmployeesByPositionName")]
+    [ProducesResponseType(typeof(List<EmployeeDTO>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> GetEmployeesByPositionName(string positionName)
+    {
+        var employees = await _employeeService.GetEmployeesByPositionAsync(positionName);
+
+        return Ok(employees);
+    }
+
+    /// <summary>
     /// Get All Employees
     /// </summary>
     /// <returns>
@@ -63,7 +107,8 @@ public class EmployeesController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest();
+            _logger.LogWarning($"Employee wasn't created");
+            return BadRequest("Invalid model");
         }
 
         var employee = await _employeeService.CreateEmployeeAsync(employeeDTO);
@@ -91,12 +136,15 @@ public class EmployeesController : Controller
 
         if (employee == null)
         {
+            _logger.LogWarning($"Employee wasn't recieved");
             return BadRequest();
         }
 
 
         return Ok(employee);
     }
+
+
 
     /// <summary>
     /// UpdateEmployee
@@ -116,14 +164,17 @@ public class EmployeesController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest("Invalid model");
         }
 
         var employee = await _employeeService.UpdateEmployeeAsync(employeeDTO);
 
         if(employee == null)
         {
-            return NotFound();
+            string message = "Employee wasn't updated";
+            _logger.LogWarning(message);
+            
+            return NotFound(message);
         }
 
         return Ok(employee);
@@ -139,7 +190,7 @@ public class EmployeesController : Controller
     /// <response code="500">Oops! Can't delete your employee right now</response>
     /// </returns>
     [HttpDelete("{id}")]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(string),(int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
@@ -149,9 +200,12 @@ public class EmployeesController : Controller
 
         if (!result)
         {
-            return NotFound();
+            string message = "Employee wasn't deleted";
+            _logger.LogWarning(message);
+
+            return NotFound(message);
         }
 
-        return Ok();
+        return Ok("Employee was deleted.");
     }
 }

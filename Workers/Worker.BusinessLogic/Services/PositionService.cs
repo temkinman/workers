@@ -1,27 +1,94 @@
-﻿using Worker.BusinessLogic.DTO;
+﻿using AutoMapper;
+using Worker.BusinessLogic.DTO;
 using Worker.BusinessLogic.Interfaces;
+using Worker.Data.Access.Entities;
+using Worker.Data.Access.Interfaces;
+using Worker.Data.Access.Repositories;
 
 namespace Worker.BusinessLogic.Services;
 
 public class PositionService : IPositionService
 {
-    public Task<PositionDTO?> CreatePositionAsync(PositionDTO position)
+    private readonly IPositionRepository _positionRepository;
+    private readonly IMapper _mapper;
+
+    public PositionService(IPositionRepository positionRepository, IMapper mapper)
     {
-        throw new NotImplementedException();
+        _positionRepository = positionRepository;
+        _mapper = mapper;
     }
 
-    public Task DeletePositionAsync(Guid id)
+    public async Task<PositionDTO?> CreatePositionAsync(PositionDTO positionDto)
     {
-        throw new NotImplementedException();
+        if (positionDto != null)
+        {
+            Position position = _mapper.Map<Position>(positionDto);
+
+            var result = await _positionRepository.CreatePositionAsync(position);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            return positionDto;
+        }
+
+        return null;
     }
 
-    public Task<PositionDTO?> GetPositionAsync(Guid id)
+    public async Task<bool> DeletePositionAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await _positionRepository.DeletePositionAsync(id);
     }
 
-    public Task<PositionDTO?> UpdatePositionAsync(PositionDTO position)
+    public async Task<List<PositionDTO>> GetAllPositionsAsync()
     {
-        throw new NotImplementedException();
+        List<Position> positions = await _positionRepository.GetAllPositionsAsync();
+
+        return _mapper.Map<List<Position>, List<PositionDTO>>(positions);
+    }
+
+    public async Task<PositionDTO?> GetPositionAsync(Guid id)
+    {
+        Position? position = await _positionRepository.GetPositionAsync(id);
+
+        if (position == null)
+        {
+            return null;
+        }
+
+        return _mapper.Map<Position, PositionDTO>(position);
+    }
+
+    public async Task<PositionDTO?> GetPositionByNameAsync(string name)
+    {
+        Position? position = await _positionRepository.GetPositionByNameAsync(name);
+
+        if (position == null)
+        {
+            return null;
+        }
+
+        return _mapper.Map<Position, PositionDTO>(position);
+    }
+
+    public async Task<PositionDTO?> UpdatePositionAsync(PositionDTO positionDto)
+    {
+        if (positionDto != null)
+        {
+            Position position = _mapper.Map<PositionDTO, Position>(positionDto);
+
+            var result = await _positionRepository.UpdatePositionAsync(position);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            return positionDto;
+        }
+
+        return null;
     }
 }

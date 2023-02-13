@@ -34,7 +34,7 @@ builder.Services.AddSingleton(mapper);
 string connectionString = builder.Configuration.GetConnectionString(nameof(WorkerAppDbContext));
 
 builder.Services.AddDbContext<WorkerAppDbContext>(options =>
-    options.UseLazyLoadingProxies()
+    options
         .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 

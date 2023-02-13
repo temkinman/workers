@@ -20,5 +20,5 @@ public class Employee
     public required DateTime BDay { get; set; }
 
     public virtual ICollection<Position> Positions { get; set; }
-    public virtual List<EmployeePosition> EmployeePositions { get; set; }
+    public virtual ICollection<EmployeePosition> EmployeePositions { get; set; }
 }

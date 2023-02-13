@@ -43,13 +43,14 @@ public class PositionRepository : IPositionRepository
         }
     }
 
-    public async Task DeletePositionAsync(Guid id)
+    public async Task<bool> DeletePositionAsync(Guid id)
     {
         _logger.LogInformation($"Trying to delete position with id {id}");
 
         try
         {
             Position? position = await _dbContext.Positions
+                .AsNoTracking()
                 .Include(p => p.Employees)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -57,18 +58,22 @@ public class PositionRepository : IPositionRepository
             {
                 _dbContext.Remove(position);
                 await _dbContext.SaveChangesAsync();
+                return true;
             }
         }
         catch (Exception ex)
         {
             _logger.LogWarning($"Position wasn't deleted: {ex.Message}");
         }
+
+        return false;
     }
 
     public async Task<List<Position>> GetAllPositionsAsync()
     {
         return await _dbContext.Positions
             .AsNoTracking()
+            .OrderBy(e => e.Name)
             .ToListAsync();
     }
 
@@ -79,6 +84,13 @@ public class PositionRepository : IPositionRepository
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
+    public async Task<Position?> GetPositionByNameAsync(string name)
+    {
+        return await _dbContext.Positions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Name.Trim().ToUpper() == name.Trim().ToUpper());
+    }
+
     public async Task<Position?> UpdatePositionAsync(Position position)
     {
         _logger.LogInformation($"Trying to update position with id {position.Id}");
@@ -86,6 +98,7 @@ public class PositionRepository : IPositionRepository
         try
         {
             Position? positionToUpdate = await _dbContext.Positions
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == position.Id);
 
             if (positionToUpdate != null)
@@ -111,4 +124,6 @@ public class PositionRepository : IPositionRepository
 
         return position != null;
     }
+
+    
 }
