@@ -11,17 +11,17 @@ public class EmployeeService : IEmployeeService
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IMapper _mapper;
 
-    public EmployeeService(IEmployeeRepository employeeRepository)
+    public EmployeeService(IEmployeeRepository employeeRepository, IMapper mapper)
     {
         _employeeRepository = employeeRepository;
-        _mapper = InitializeAutomapper();
+        _mapper = mapper;
     }
 
     public async Task<EmployeeDTO?> CreateEmployeeAsync(EmployeeDTO employeeDto)
     {
         if (employeeDto != null)
         {
-            Employee employee = _mapper.Map<EmployeeDTO, Employee>(employeeDto);
+            Employee employee = _mapper.Map<Employee>(employeeDto);
 
             var result = await _employeeRepository.CreateEmployeeAsync(employee);
 
@@ -36,9 +36,9 @@ public class EmployeeService : IEmployeeService
         return null;
     }
 
-    public async Task DeleteEmployeeAsync(Guid id)
+    public async Task<bool> DeleteEmployeeAsync(Guid id)
     {
-        await _employeeRepository.DeleteEmployeeAsync(id);
+        return await _employeeRepository.DeleteEmployeeAsync(id);
     }
 
     public async Task<List<EmployeeDTO>> GetAllEmployeesAsync()
@@ -84,15 +84,5 @@ public class EmployeeService : IEmployeeService
         }
 
         return null;
-    }
-
-    private Mapper InitializeAutomapper()
-    {
-        var config = new MapperConfiguration(cfg =>
-            cfg.CreateMap<Employee, EmployeeDTO>()
-            .ReverseMap()
-        );
-
-        return new Mapper(config);
     }
 }

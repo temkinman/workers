@@ -11,7 +11,7 @@ using Worker.Data.Access.EF;
 namespace Worker.Data.Access.Migrations
 {
     [DbContext(typeof(WorkerAppDbContext))]
-    [Migration("20230212093635_initial")]
+    [Migration("20230212144820_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -52,6 +52,21 @@ namespace Worker.Data.Access.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("Worker.Data.Access.Entities.EmployeePosition", b =>
+                {
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("PositionId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("EmployeeId", "PositionId");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("EmployeePositions");
+                });
+
             modelBuilder.Entity("Worker.Data.Access.Entities.Position", b =>
                 {
                     b.Property<Guid>("Id")
@@ -68,6 +83,35 @@ namespace Worker.Data.Access.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Positions");
+                });
+
+            modelBuilder.Entity("Worker.Data.Access.Entities.EmployeePosition", b =>
+                {
+                    b.HasOne("Worker.Data.Access.Entities.Employee", "Employee")
+                        .WithMany("EmployeePositions")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Worker.Data.Access.Entities.Position", "Position")
+                        .WithMany("EmployeePositions")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("Worker.Data.Access.Entities.Employee", b =>
+                {
+                    b.Navigation("EmployeePositions");
+                });
+
+            modelBuilder.Entity("Worker.Data.Access.Entities.Position", b =>
+                {
+                    b.Navigation("EmployeePositions");
                 });
 #pragma warning restore 612, 618
         }

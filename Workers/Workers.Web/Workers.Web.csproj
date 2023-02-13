@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,9 +14,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2" />
+	<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.2" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Worker.BusinessLogic\Worker.BusinessLogic.csproj" />
     <ProjectReference Include="..\Worker.Data.Access\Worker.Data.Access.csproj" />
   </ItemGroup>
 

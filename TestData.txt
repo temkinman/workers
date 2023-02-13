@@ -1,0 +1,83 @@
+// adding employee
+{
+  "firstName": "Ivan",
+  "lastName": "Rogov",
+  "surName": "Testerovich",
+  "bDay": "2002-01-22",
+  "positions": [
+    {
+      "name": "CTO",
+      "grade": 3
+    }
+  ]
+}
+
+
+{
+  "firstName": "Test",
+  "lastName": "Testerov",
+  "surName": "Testerovich",
+  "bDay": "1995-04-02",
+  "positions": [
+    {
+      "name": "Junior QA",
+      "grade": 8
+    },
+    {
+      "name": "Middle QA",
+      "grade": 9
+    }
+  ]
+}
+
+{
+  "firstName": "Petr",
+  "lastName": "Petrov",
+  "surName": "Petrovich",
+  "bDay": "1990-08-09",
+  "positions": [
+    {
+      "name": "Junior .Net",
+      "grade": 4
+    },
+    {
+      "name": "Middle .Net",
+      "grade": 6
+    },
+    {
+      "name": "Senior .Net",
+      "grade": 15
+    }
+  ]
+}
+
+
+// adding employee with WRONG grade
+{
+  "firstName": "IvanWrong",
+  "lastName": "RogovWrong",
+  "surName": "TesterovichWrong",
+  "bDay": "1984-07-09",
+  "positions": [
+    {
+      "name": "CTO",
+      "grade": 3
+    },
+    {
+      "name": "PM",
+      "grade": 14
+    }
+  ]
+}
+
+
+// update employee
+
+{
+    "id": "ab683b40-9be2-4129-868c-e2e04a6a00af",
+    "firstName": "Ivan!!",
+    "lastName": "Rogov!!",
+    "surName": "TesterovichOFF!!!",
+    "bDay": "1984-07-09T00:00:00",
+    "positions": []
+  }
